@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "metric-study"
+version = "0.1.0"
+description = "Metric-sensitivity study for X-ray scattering VAE reconstructions (512x512 vs native Pilatus 2M)."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+keywords = ["vae", "pytorch", "x-ray-scattering", "metrics"]
+
+dependencies = [
+  "torch>=2.1",
+  "opencv-python-headless>=4.9",
+  "numpy>=1.26",
+  "scipy>=1.11",
+  "scikit-image>=0.22",
+  "pillow>=10.0",
+  "pyarrow>=14.0",
+  "pandas>=2.0",
+  "ruamel.yaml>=0.18",
+  "pytorch-msssim>=1.0",
+]
+
+[project.optional-dependencies]
+dev = ["ruff>=0.4", "pytest>=7.0"]
+
+[tool.setuptools.packages.find]
+include = ["metric_study*"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,21 @@
+Metadata-Version: 2.4
+Name: metric-study
+Version: 0.1.0
+Summary: Metric-sensitivity study for X-ray scattering VAE reconstructions (512x512 vs native Pilatus 2M).
+License: MIT
+Keywords: vae,pytorch,x-ray-scattering,metrics
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: torch>=2.1
+Requires-Dist: opencv-python-headless>=4.9
+Requires-Dist: numpy>=1.26
+Requires-Dist: scipy>=1.11
+Requires-Dist: scikit-image>=0.22
+Requires-Dist: pillow>=10.0
+Requires-Dist: pyarrow>=14.0
+Requires-Dist: pandas>=2.0
+Requires-Dist: ruamel.yaml>=0.18
+Requires-Dist: pytorch-msssim>=1.0
+Provides-Extra: dev
+Requires-Dist: ruff>=0.4; extra == "dev"
+Requires-Dist: pytest>=7.0; extra == "dev"

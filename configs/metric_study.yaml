@@ -1,0 +1,79 @@
+# Metric-study config, YParams-style (named sections), matching the training repo's
+# default_500.yaml conventions (plan §5.4). Every pipeline output row carries the
+# config_hash of the section that produced it.
+
+default: &default
+  seed: 0
+  resolutions: [native, "512"]
+
+  data_dir: "/Users/aianalyticscomputing/Documents/sample_data"
+  output_dir: "/Users/aianalyticscomputing/Documents/Coding/metric_study/outputs/default"
+
+  chunk_size: 2000
+
+  downsample:
+    interpolation: INTER_AREA
+    tau: 0.9
+
+  preprocess:
+    log_eps: 1.0
+    clip_low_pct: 0.5
+    clip_high_pct: 99.5
+    apply_upper_clip: true
+
+  masks:
+    gap_dilation_px: 2
+    dark_value: 3.0
+    dark_frac_thresh: 0.99
+    hot_frac_thresh: 0.5
+
+  # Severity grids, plan §2. Registry keys must match metric_study.degradations.REGISTRY.
+  degradations:
+    fine_ring_attenuation: [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+    broad_ring_damage: [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+    peak_removal: [0.1, 0.25, 0.5, 1.0]
+    gaussian_blur: [0.5, 1.0, 1.5, 2.0, 3.0, 4.0, 6.0]
+    global_scaling: [0.5, 0.8, 0.9, 1.1, 1.25, 2.0]
+    additive_offset: [0.01, 0.05, 0.1, 0.25]
+    poisson_resampling: [1.0, 10.0, 100.0, 1000.0]
+
+  metrics:
+    names:
+      - mse_linear
+      - mse_model_unmasked
+      - log_mse
+      - log_l1
+      - asinh_mse
+      - asinh_l1
+      - poisson_nll
+      - poisson_chi2
+      - ssim
+      - ms_ssim
+      - neg_pearson
+      - focal_frequency_loss
+      - peak_weighted_mse
+    peak_weight_beta: 10.0
+    params:
+      log_mse: { eps: 1.0 }
+      log_l1: { eps: 1.0 }
+      asinh_mse: { scale: 0.05 }
+      asinh_l1: { scale: 0.05 }
+      poisson_nll: { pseudo_count: true }
+      poisson_chi2: { pseudo_count: true }
+      ssim: { win_size: 11, win_sigma: 1.5, data_range: 1.0 }
+      ms_ssim: { win_size: 11, win_sigma: 1.5, data_range: 1.0 }
+      focal_frequency_loss: { alpha: 1.0, patch_factor: 1 }
+
+dry_run:
+  <<: *default
+  data_dir: "/Users/aianalyticscomputing/Documents/sample_data"
+  output_dir: "/Users/aianalyticscomputing/Documents/Coding/metric_study/outputs/dry_run"
+  chunk_size: 10
+  degradations:
+    fine_ring_attenuation: [0.0, 0.5, 1.0]
+    broad_ring_damage: [0.0, 0.5, 1.0]
+    peak_removal: [0.5, 1.0]
+    gaussian_blur: [1.0, 3.0]
+    global_scaling: [0.5, 2.0]
+    additive_offset: [0.05]
+    poisson_resampling: [10.0, 1000.0]
